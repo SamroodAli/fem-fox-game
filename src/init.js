@@ -1,8 +1,10 @@
+// imports
+import gameState from "./gameState";
+
+// constants
 const TICK_RATE = 3000;
 
-function tick() {
-  console.log("tick", Date.now());
-}
+// game
 
 function init() {
   console.log("starting game");
@@ -14,7 +16,7 @@ function init() {
     const now = Date.now();
 
     if (nextTimeToTick <= now) {
-      tick();
+      gameState.tick();
       // requestAnimationFrame is going to be called a lot, so we put to condition to tick only in TICK_RATE time. here 3 seconds
       nextTimeToTick = now + TICK_RATE;
     }
