@@ -1,3 +1,5 @@
+import { changeFoxState, changeWeatherScene } from "./ui";
+
 const gameState = {
   current: "INIT",
   clock: 1,
@@ -5,13 +7,18 @@ const gameState = {
   tick() {
     this.clock++;
     console.log("clock", this.clock);
+    // waking up the fox
+    if (this.clock === this.wakeTime) {
+      this.wake();
+    }
     return this.clock;
   },
   // start game function and wake up function
   startGame() {
-    console.log("hatching");
     this.current = "HATCHING";
     this.wakeTime = this.clock + 3;
+    changeFoxState("egg");
+    changeWeatherScene("day");
   },
   wake() {
     console.log("awoken");
