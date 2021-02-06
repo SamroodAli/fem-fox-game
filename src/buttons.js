@@ -2,7 +2,7 @@ import { ICONS } from "./constants";
 
 const toggleHighlighted = (icon, isShowIcon) => {
   document
-    .querySelector(`${ICONS[icon] - icon}`)
+    .querySelector(`.${ICONS[icon]}-icon`)
     .classList.toggle("highlighted", isShowIcon);
 };
 

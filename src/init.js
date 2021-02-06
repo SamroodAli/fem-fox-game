@@ -1,14 +1,12 @@
 // imports
+import { TICK_RATE } from "./constants";
+import initButtons from "./buttons";
 import gameState from "./gameState";
 
-// constants
-const TICK_RATE = 3000;
-
 // game
-
 function init() {
   console.log("starting game");
-
+  initButtons(gameState.handleUserAction);
   let nextTimeToTick = Date.now();
 
   // recursive function to che
