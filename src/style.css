@@ -97,6 +97,11 @@ body {
   /* in honor of Eric meyer's daughter Rebecca */
   background-color: rebeccapurple;
   color: white;
+
+  padding: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 12px;
 }
 
 .modal:empty {
