@@ -1,0 +1,57 @@
+/* general */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* frame and background */
+
+body {
+  display: flex;
+  align-items: center;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* take up the full viewport */
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.frame {
+  height: 716px;
+  width: 762px;
+  position: relative;
+}
+
+.inner {
+  position: relative;
+}
+
+.game {
+  width: 628px;
+  height: 577px;
+  position: absolute;
+  top: 62px;
+  left: 67px;
+}
+
+.game.night {
+  width: 716px;
+  top: 62px;
+  left: -19px;
+}
+
+.hidden {
+  display: none;
+}
