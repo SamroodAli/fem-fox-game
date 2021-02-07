@@ -18,7 +18,8 @@ const gameState = {
   hungryTime: -1,
   dieTime: -1,
   poopTime: -1,
-  celebrateTime: -1,
+  timeToStartCelebrating: -1,
+  timeToEndCelebrating: -1,
   // tick function
   tick() {
     if (this.clock === this.wakeTime) {
@@ -29,6 +30,10 @@ const gameState = {
       this.getHungry();
     } else if (this.clock === this.dieTime) {
       this.die();
+    } else if (this.clock === this.timeToStartCelebrating) {
+      this.startCelebrating();
+    } else if (this.clock === this.timeToEndCelebrating) {
+      this.endCelebrating();
     }
     this.clock++;
     console.log("clock", this.clock);
@@ -45,15 +50,17 @@ const gameState = {
   wake() {
     //waking up
     this.current = "IDLING";
-    changeFoxState("idling");
     //rain or not
     const DAY_CHANCE = Math.random();
     this.scene = DAY_CHANCE > RAIN_CHANCE ? 0 : 1; //0 - Day, 1 - Rain, RAIN_CHANCE from constants.js
     changeScene(SCENES[this.scene]);
+    //change fox state to rain or idling mode
+    this.determineFoxState();
     //updating times
     this.wakeTime = -1; //turning off wakeTime
     this.sleepTime = this.clock + DAY_LENGTH; //next sleep time which is after a day
     this.hungryTime = getNextHungerTime(this.clock); //nest time to be hungry
+    console.log(this.hungryTime, "this is time to be hungry");
   },
   sleep() {
     this.current = "SLEEP";
@@ -72,6 +79,26 @@ const gameState = {
     changeFoxState("dead");
     changeScene(SCENES[2]);
     this.dieTime = -1;
+  },
+  startCelebrating() {
+    this.current = "CLEBRATNG";
+    changeFoxState("celebrate");
+    this.timeToStartCelebrating = -1;
+    this.timeToEndCelebrating = this.clock + 2;
+  },
+  endCelebrating() {
+    this.current = "IDLING";
+    this.timeToEndCelebrating = -1;
+    this.determineFoxState();
+  },
+  determineFoxState() {
+    if (this.current === "IDLING") {
+      if (SCENES[this.scene] === "rain") {
+        changeFoxState("rain");
+      } else {
+        changeFoxState("idling");
+      }
+    }
   },
   // function to handle user Actions on buttons
   handleUserAction(icon) {
@@ -117,7 +144,7 @@ const gameState = {
     this.dieTime = -1;
     this.poopTime = getNextPoopTime(this.clock);
     changeFoxState("eating");
-    this.celebrateTime = this.clock + 2; //delay after feeding which the fox celebrates
+    this.timeToStartCelebrating = this.clock + 1;
   },
 };
 //binding handleUserAction's 'this' to gameState regardless of the context handleUserAction is executed
