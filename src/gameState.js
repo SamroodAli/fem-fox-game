@@ -1,4 +1,4 @@
-import { changeFoxState, changeScene, togglePoopBag } from "./ui";
+import { changeFoxState, changeScene, togglePoopBag, writeModal } from "./ui";
 import {
   RAIN_CHANCE,
   SCENES,
@@ -44,6 +44,7 @@ const gameState = {
   },
   // start game function and wake up function
   startGame() {
+    writeModal();
     this.current = "HATCHING";
     this.wakeTime = this.clock + 1; //delay after hatching
     changeFoxState("egg");

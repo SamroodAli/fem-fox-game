@@ -89,7 +89,7 @@ body {
 }
 
 /* Modal styling */
-.modal {
+.modal-inner {
   position: absolute;
   top: 0;
   left: 0;
@@ -102,10 +102,6 @@ body {
   font-size: 20px;
   font-weight: bold;
   border-radius: 12px;
-}
-
-.modal:empty {
-  display: none;
 }
 
 .modal-inner:empty {
