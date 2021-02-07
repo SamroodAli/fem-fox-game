@@ -1,9 +1,8 @@
-//named descriptive functions because it helps in debugging in stack trace and better for readability
-// descriptive named functions are assigned to const variables and exported
+//assigning named functions instead of arrow functions because it helps in debugging in stack trace and better for readability
 export const changeFoxState = function changeFoxState(state) {
   document.querySelector(".fox").className = `fox fox-${state}`;
 };
-export const changeWeatherScene = function changeWeatherScene(state) {
+export const changeScene = function changeScene(state) {
   document.querySelector(".game").className = `game ${state}`;
 };
 
