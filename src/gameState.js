@@ -1,4 +1,4 @@
-import { changeFoxState, changeScene } from "./ui";
+import { changeFoxState, changeScene, togglePoopBag } from "./ui";
 import {
   RAIN_CHANCE,
   SCENES,
@@ -34,6 +34,8 @@ const gameState = {
       this.startCelebrating();
     } else if (this.clock === this.timeToEndCelebrating) {
       this.endCelebrating();
+    } else if (this.clock === this.poopTime) {
+      this.poop();
     }
     this.clock++;
     console.log("clock", this.clock);
@@ -73,6 +75,12 @@ const gameState = {
     this.dieTime = getNextDieTime(this.clock);
     changeFoxState("hungry");
     this.hungryTime = -1;
+  },
+  poop() {
+    this.current = "POOPING";
+    this.poopTime = -1;
+    this.dieTime = getNextDieTime(this.clock);
+    changeFoxState("pooping");
   },
   die() {
     this.current = "DEAD";
@@ -133,6 +141,14 @@ const gameState = {
   },
   cleanUpPoop() {
     console.log("cleanUpPoop");
+    if (this.current !== "POOPING") {
+      //do nothing
+      return;
+    }
+    this.dieTime = -1;
+    togglePoopBag(true);
+    this.startCelebrating();
+    this.hungryTime = getNextHungerTime(this.clock);
   },
   feed() {
     console.log("feed");
