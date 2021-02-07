@@ -69,6 +69,7 @@ const gameState = {
     this.current = "SLEEP";
     changeFoxState("sleep");
     changeScene("night");
+    this.clearTimes(); // making sure nothing happens in the night
     this.wakeTime = this.clock + NIGHT_LENGTH;
   },
   getHungry() {
@@ -87,7 +88,8 @@ const gameState = {
     this.current = "DEAD";
     changeFoxState("dead");
     changeScene("dead");
-    this.dieTime = -1;
+    this.clearTimes();
+    writeModal("The fox died :( <br/> Press the middle button to start");
   },
   startCelebrating() {
     this.current = "CElEBRATING";
@@ -110,6 +112,16 @@ const gameState = {
       }
     }
   },
+  clearTimes() {
+    this.wakeTime = -1;
+    this.sleepTime = -1;
+    this.hungryTime = -1;
+    this.dieTime = -1;
+    this.poopTime = -1;
+    this.timeToStartCelebrating = -1;
+    this.timeToEndCelebrating = -1;
+  },
+
   // function to handle user Actions on buttons
   handleUserAction(icon) {
     // ignore any button clicks (icons) if the fox is sleeping, feeding , celebrating or hatching
