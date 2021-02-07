@@ -1,17 +1,32 @@
 import { changeFoxState, changeScene } from "./ui";
-import { RAIN_CHANCE, SCENES, DAY_LENGTH, NIGHT_LENGTH } from "./constants";
+import {
+  RAIN_CHANCE,
+  SCENES,
+  DAY_LENGTH,
+  NIGHT_LENGTH,
+  getNextDieTime,
+  getNextHungerTime,
+} from "./constants";
 
 const gameState = {
   current: "INIT",
   clock: 1,
+  //these could also be undefined,only initializing variable here
   wakeTime: -1,
-  sleepTime: -1, //this could also be undefined,only initializing variable here
+  sleepTime: -1,
+  hungryTime: -1,
+  dieTime: -1,
+
   // tick function
   tick() {
     if (this.clock === this.wakeTime) {
       this.wake();
     } else if (this.clock === this.sleepTime) {
       this.sleep();
+    } else if (this.clock === this.hungryTime) {
+      this.getHungry();
+    } else if (this.clock === this.dieTime) {
+      this.die();
     }
     this.clock++;
     console.log("clock", this.clock);
@@ -28,19 +43,33 @@ const gameState = {
   wake() {
     //waking up
     this.current = "IDLING";
-    this.wakeTime = -1; //turning off wakeTime
     changeFoxState("idling");
-    this.sleepTime = this.clock + DAY_LENGTH; //next sleep time which is after a day
     //rain or not
-    // const DAY_CHANCE = Math.random();
-    this.scene = Math.random() > RAIN_CHANCE ? 0 : 1; //0 - Day, 1 - Rain, RAIN_CHANCE from constants.js
+    const DAY_CHANCE = Math.random();
+    this.scene = DAY_CHANCE > RAIN_CHANCE ? 0 : 1; //0 - Day, 1 - Rain, RAIN_CHANCE from constants.js
     changeScene(SCENES[this.scene]);
+    //updating times
+    this.wakeTime = -1; //turning off wakeTime
+    this.sleepTime = this.clock + DAY_LENGTH; //next sleep time which is after a day
+    this.hungryTime = getNextHungerTime(this.clock); //nest time to be hungry
   },
   sleep() {
     this.current = "SLEEP";
     changeFoxState("sleep");
     changeScene("night");
     this.wakeTime = this.clock + NIGHT_LENGTH;
+  },
+  getHungry() {
+    this.current = "HUNGRY";
+    this.dieTime = getNextDieTime(this.clock);
+    changeFoxState("hungry");
+    this.hungryTime = -1;
+  },
+  die() {
+    this.current = "DEAD";
+    changeFoxState("dead");
+    changeScene(SCENES[2]);
+    this.dieTime = -1;
   },
   // function to handle user Actions on buttons
   handleUserAction(icon) {
