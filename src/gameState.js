@@ -6,6 +6,7 @@ import {
   NIGHT_LENGTH,
   getNextDieTime,
   getNextHungerTime,
+  getNextPoopTime,
 } from "./constants";
 
 const gameState = {
@@ -16,7 +17,8 @@ const gameState = {
   sleepTime: -1,
   hungryTime: -1,
   dieTime: -1,
-
+  poopTime: -1,
+  celebrateTime: -1,
   // tick function
   tick() {
     if (this.clock === this.wakeTime) {
@@ -107,6 +109,15 @@ const gameState = {
   },
   feed() {
     console.log("feed");
+    if (this.current !== "HUNGRY") {
+      //do nothing
+      return;
+    }
+    this.current = "FEEDING";
+    this.dieTime = -1;
+    this.poopTime = getNextPoopTime(this.clock);
+    changeFoxState("eating");
+    this.celebrateTime = this.clock + 2; //delay after feeding which the fox celebrates
   },
 };
 //binding handleUserAction's 'this' to gameState regardless of the context handleUserAction is executed
