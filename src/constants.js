@@ -7,7 +7,7 @@ export const NIGHT_LENGTH = 4;
 
 //random number between 0 and 2 and add 5 => random between 5 and 7
 export const getNextHungerTime = (clock) => {
-  return Math.floor(Math.random() * 3) + 5 + clock; //5
+  return Math.floor(Math.random() * 3) + 3 + clock; //5
 };
 
 export const getNextDieTime = (clock) => {
@@ -15,5 +15,5 @@ export const getNextDieTime = (clock) => {
 };
 
 export const getNextPoopTime = (clock) => {
-  return Math.floor(Math.random() * 3) + 4 + clock;
+  return Math.floor(Math.random() * 3) + 3 + clock;
 };
