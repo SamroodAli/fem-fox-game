@@ -85,11 +85,11 @@ const gameState = {
   die() {
     this.current = "DEAD";
     changeFoxState("dead");
-    changeScene(SCENES[2]);
+    changeScene("dead");
     this.dieTime = -1;
   },
   startCelebrating() {
-    this.current = "CLEBRATNG";
+    this.current = "CElEBRATING";
     changeFoxState("celebrate");
     this.timeToStartCelebrating = -1;
     this.timeToEndCelebrating = this.clock + 2;
@@ -98,6 +98,7 @@ const gameState = {
     this.current = "IDLING";
     this.timeToEndCelebrating = -1;
     this.determineFoxState();
+    togglePoopBag(false);
   },
   determineFoxState() {
     if (this.current === "IDLING") {
@@ -137,6 +138,9 @@ const gameState = {
   },
   // button events handlers
   changeWeather() {
+    this.scene = (this.scene + 1) % 2; // or this.scene === 1 ? 0 : 1 ;
+    changeScene(SCENES[this.scene]);
+    this.determineFoxState();
     console.log("changeWeather");
   },
   cleanUpPoop() {
@@ -158,9 +162,9 @@ const gameState = {
     }
     this.current = "FEEDING";
     this.dieTime = -1;
-    this.poopTime = getNextPoopTime(this.clock);
     changeFoxState("eating");
     this.timeToStartCelebrating = this.clock + 1;
+    this.poopTime = getNextPoopTime(this.clock);
   },
 };
 //binding handleUserAction's 'this' to gameState regardless of the context handleUserAction is executed
